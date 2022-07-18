@@ -5,8 +5,8 @@ go 1.18
 require (
 	github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869
 	github.com/caddyserver/certmagic v0.16.1
-	github.com/creachadair/jrpc2 v0.41.0
 	github.com/chzyer/readline v1.5.1
+	github.com/creachadair/jrpc2 v0.41.0
 	github.com/ddliu/go-httpclient v0.6.9
 	github.com/denisenkom/go-mssqldb v0.12.2
 	github.com/didip/tollbooth v4.0.2+incompatible
