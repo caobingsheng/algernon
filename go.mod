@@ -5,8 +5,8 @@ go 1.18
 require (
 	github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869
 	github.com/caddyserver/certmagic v0.16.1
-	github.com/chzyer/readline v1.5.0
 	github.com/creachadair/jrpc2 v0.41.0
+	github.com/chzyer/readline v1.5.1
 	github.com/ddliu/go-httpclient v0.6.9
 	github.com/denisenkom/go-mssqldb v0.12.2
 	github.com/didip/tollbooth v4.0.2+incompatible
@@ -58,7 +58,7 @@ require (
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
 	github.com/gomodule/redigo v1.8.9 // indirect
-	github.com/klauspost/cpuid/v2 v2.0.14 // indirect
+	github.com/klauspost/cpuid/v2 v2.1.0 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/libdns/libdns v0.2.1 // indirect
@@ -86,7 +86,7 @@ require (
 	github.com/xyproto/simplehstore v1.8.1 // indirect
 	github.com/xyproto/simplemaria v0.0.0-20190613092611-fe65bee4fd92 // indirect
 	github.com/xyproto/symwalk v1.1.1 // indirect
-	github.com/xyproto/vt100 v1.10.4 // indirect
+	github.com/xyproto/vt100 v1.11.0 // indirect
 	go.etcd.io/bbolt v1.3.6 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
@@ -94,7 +94,7 @@ require (
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
-	golang.org/x/sys v0.0.0-20220708085239-5a0f0661e09d // indirect
+	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20220609170525-579cf78fd858 // indirect
 	golang.org/x/tools v0.1.11 // indirect

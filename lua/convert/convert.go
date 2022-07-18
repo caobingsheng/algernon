@@ -6,11 +6,12 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"sort"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/xyproto/gluamapper"
-	"github.com/xyproto/gopher-lua"
+	lua "github.com/xyproto/gopher-lua"
 	"github.com/xyproto/jpath"
 )
 
@@ -40,11 +41,25 @@ func PprintToWriter(w io.Writer, value lua.LValue) {
 			// Order the map
 			length := len(m)
 			for i := 1; i <= length; i++ {
-				val := m[float64(i)] // gluamapper uses float64 for all numbers
-				buf.WriteString(fmt.Sprintf("%#v", val))
-				if i != length {
-					// Output a comma for every element except the last one
-					buf.WriteString(", ")
+				// gluamapper uses float64 for all numbers?
+				if val, ok := m[float64(i)]; ok {
+					buf.WriteString(fmt.Sprintf("%#v", val))
+					if i != length {
+						// Output a comma for every element except the last one
+						buf.WriteString(", ")
+					}
+				} else if val, ok := m[i]; ok {
+					buf.WriteString(fmt.Sprintf("%#v", val))
+					if i != length {
+						// Output a comma for every element except the last one
+						buf.WriteString(", ")
+					}
+				} else {
+					// Unrecognized type of array or map, just return the sprintf representation
+					buf.Reset()
+					buf.WriteString(fmt.Sprintf("%v", m))
+					buf.WriteTo(w)
+					return
 				}
 			}
 			buf.WriteString("}")
@@ -56,9 +71,35 @@ func PprintToWriter(w io.Writer, value lua.LValue) {
 			fmt.Fprint(w, "{}")
 			return
 		}
-		// A go map, but with "interface{}" hidden
-		// TODO: Also hide double quotes, but only when they surround the keys in the map
-		fmt.Fprint(w, strings.ReplaceAll(fmt.Sprintf("%#v", m)[29:], ":[]interface {}", "="), "\"", "", -1)
+		// Convert the map to a string
+		// First extract the keys, and sort them
+		var mapKeys []string
+		stringMap := make(map[string]string)
+		for k, v := range m {
+			keyString := fmt.Sprintf("%#v", k)
+			keyString = strings.TrimPrefix(keyString, "\"")
+			keyString = strings.TrimSuffix(keyString, "\"")
+			valueString := fmt.Sprintf("%#v", v)
+			mapKeys = append(mapKeys, keyString)
+			stringMap[keyString] = valueString
+		}
+		sort.Strings(mapKeys)
+
+		// Then loop over the keys and build a string
+		var sb strings.Builder
+		sb.WriteString("{")
+		for i, keyString := range mapKeys {
+			if i != 0 {
+				sb.WriteString(", ")
+			}
+			valueString := stringMap[keyString]
+			sb.WriteString(keyString + "=" + valueString)
+		}
+		sb.WriteString("}")
+
+		// Then replace "[]interface {}" with nothing and output the string
+		s := strings.ReplaceAll(sb.String(), "[]interface {}", "")
+		fmt.Fprint(w, s)
 	case *lua.LFunction:
 		if v.Proto != nil {
 			// Extended information about the function
